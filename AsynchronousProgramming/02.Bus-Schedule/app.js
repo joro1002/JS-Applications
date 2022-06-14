@@ -1,11 +1,29 @@
 function solve() {
+    const infoElement = document.getElementById('info');
+    const departBtn = document.getElementById('depart');
+    const arriveBtn = document.getElementById('arrive');
 
-    function depart() {
-        console.log('Depart TODO...');
+    let stop = {
+        next: 'depot'
+    }
+
+    async function depart() {
+        const url = `http://localhost:3030/jsonstore/bus/schedule/${stop.next}`;
+
+        const res = await fetch(url);
+        stop = await res.json();
+
+        infoElement.textContent = `Next stop ${stop.name}`;
+
+        departBtn.disabled = true;
+        arriveBtn.disabled = false;
     }
 
     function arrive() {
-        console.log('Arrive TODO...');
+        infoElement.textContent = `Arriving at ${stop.name}`;
+        
+        departBtn.disabled = false;
+        arriveBtn.disabled = true;
     }
 
     return {
